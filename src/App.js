@@ -9,7 +9,7 @@ import { FavouritesContext } from './contexts/favourites'
 const apiKey = 'ao3o2pNEYof5LZn2xixB7e1pVm7k1Xu4'
 const searchLimit = 8
 
-const apiRoot = `http://api.giphy.com/v1/gifs`
+const apiRoot = `https://api.giphy.com/v1/gifs`
 const createSearchUrl = (keyword, offset) => `${apiRoot}/search?api_key=${apiKey}&q=${encodeURIComponent(keyword)}&limit=${searchLimit}&offset=${offset}`
 const createGetGifsUrl = (ids) => `${apiRoot}?api_key=${apiKey}&ids=${ids.join(',')}`
 const fetchGifSearch = async (keyword, offset = 0) => {
