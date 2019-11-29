@@ -74,9 +74,13 @@ const ImageCard = styled((props = {}) => {
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
+    let isMounted = true
+
     const img = new Image()
-    img.onload = () => setLoaded(true)
+    img.onload = () => isMounted && setLoaded(true)
     img.src = image.url
+
+    return () => isMounted = false
   }, [image.url])
 
   const isFavourited = favourites.some(favourite => favourite === image.id)
@@ -213,7 +217,7 @@ const SearchScreen = styled((props = {}) => {
     fetchGifSearch(queryParamKeyword)
       .then((images) => isMounted && setImages(images))
       .catch(() => {})
-      .then(() => setLoading(false))
+      .then(() => isMounted && setLoading(false))
 
     return () => isMounted = false
   }, [queryParamKeyword])
@@ -322,8 +326,15 @@ const App = (props = {}) => {
     <div className={`App ${className}`}>
       <Router>
         <header>
-          <NavLink to="/">Search</NavLink>
-          <NavLink to="/favourites">Favourites</NavLink>
+          <h3 className="logo">
+            <span>{'Galler'}</span>
+            <span>{'easy'}</span>
+          </h3>
+          <div className="divider">{'|'}</div>
+          <div className="nav-bar">
+            <NavLink to="/" exact>Search</NavLink>
+            <NavLink to="/favourites">Favourites</NavLink>
+          </div>
         </header>
         <Switch>
           <Route path="/favourites">
@@ -340,6 +351,41 @@ const App = (props = {}) => {
 
 export default styled(App)`
 text-align: center;
+
+header {
+  display: flex;
+
+  & > * {
+    font-size: 1.2rem;
+  }
+
+  .divider {
+    margin: 0 25px;
+  }
+
+  .logo {
+    margin: 0;
+    margin-left: 40px;
+
+    span:first-child {
+      font-weight: normal;
+    }
+  }
+
+  .nav-bar {
+    a:first-child {
+      width: 80px;
+      display: inline-block;
+    }
+    a {
+      text-decoration: none;
+      color: black;
+    }
+    a.active {
+      font-weight: bold;
+    }
+  }
+}
 
 & > main {
   width: 100%;
