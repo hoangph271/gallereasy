@@ -256,6 +256,8 @@ align-items: center;
   box-sizing: border-box;
 }
 `
+
+// eslint-disable-next-line no-unused-vars
 const FavouritesScreen = styled((props = {}) => {
   const { className } = props
   const [loading, setLoading] = useState(true)
@@ -263,8 +265,12 @@ const FavouritesScreen = styled((props = {}) => {
   const [images, setImages] = useState(null)
 
   useEffect(() => {
-    if (favourites.length === 0) { return }
     if (images !== null) return
+    if (favourites.length === 0) {
+      setLoading(false)
+      setImages([])
+      return
+    }
 
     setLoading(true)
 
@@ -300,8 +306,8 @@ const App = (props = {}) => {
 
   return (
     <div className={`App ${className}`}>
-      {/* <SearchScreen /> */}
-      <FavouritesScreen />
+      <SearchScreen />
+      {/* <FavouritesScreen /> */}
     </div>
   )
 }
@@ -318,6 +324,5 @@ text-align: center;
   flex-direction: column;
   align-items: center;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 `
