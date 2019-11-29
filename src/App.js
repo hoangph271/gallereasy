@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useContext, useEffect, useRef } from 'react'
+import { BrowserRouter as Router, Switch, Route, useLocation, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 import love from './assets/icons/love.png'
@@ -42,6 +43,7 @@ const fetchGifs = async (ids) => {
   console.error(await res.json())
   throw new Error('fetchGifSearch fail')
 }
+
 const Loader = styled((props = {}) => {
   const { className } = props
 
@@ -178,9 +180,13 @@ grid-template-columns: repeat(1, 1fr);
 const SearchScreen = styled((props = {}) => {
   const { className } = props
 
+  const history = useHistory()
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(false)
-  const [keyword, setKeyword] = useState('')
+
+  const { search } = useLocation()
+  const queryParamKeyword = new URLSearchParams(search).get('keyword') || ''
+  const [keyword, setKeyword] = useState(queryParamKeyword)
   const loadMoreBtn = useRef(null)
 
   const handleLoadMore = useCallback(async () => {
@@ -197,21 +203,29 @@ const SearchScreen = styled((props = {}) => {
     setLoading(false)
   }, [loading, images, keyword])
 
+  useEffect(() => {
+    if (!Boolean(queryParamKeyword)) return
+
+    let isMounted = true
+    setLoading(true)
+
+    // TODO: Handle errors in some better way...! :")
+    fetchGifSearch(queryParamKeyword)
+      .then((images) => isMounted && setImages(images))
+      .catch(() => {})
+      .then(() => setLoading(false))
+
+    return () => isMounted = false
+  }, [queryParamKeyword])
+
   const handleSearch = useCallback(async (e) => {
     e.preventDefault()
 
     if (loading) return
     if (!Boolean(keyword)) return
 
-    setLoading(true)
-
-    // TODO: Handle errors in some better way...! :")
-    await fetchGifSearch(keyword)
-      .then((images) => setImages(images))
-      .catch(() => {})
-
-    setLoading(false)
-  }, [loading, keyword])
+    history.push(`/?keyword=${encodeURIComponent(keyword)}`)
+  }, [history, keyword, loading])
 
   const handleKeywordChange = useCallback((e) => {
     setKeyword(e.target.value)
@@ -306,8 +320,16 @@ const App = (props = {}) => {
 
   return (
     <div className={`App ${className}`}>
-      <SearchScreen />
-      {/* <FavouritesScreen /> */}
+      <Router>
+        <Switch>
+          <Route path="/favourites">
+            <FavouritesScreen />
+          </Route>
+          <Route path="/">
+            <SearchScreen />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   )
 }
