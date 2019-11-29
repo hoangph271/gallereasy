@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useContext, useEffect, useRef } from 'react'
-import { BrowserRouter as Router, Switch, Route, useLocation, useHistory } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, useLocation, useHistory, NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
 import love from './assets/icons/love.png'
@@ -232,7 +232,7 @@ const SearchScreen = styled((props = {}) => {
   }, [])
 
   return (
-    <header className={className}>
+    <main className={className}>
       <form onSubmit={handleSearch}>
         <input
           value={keyword}
@@ -256,7 +256,7 @@ const SearchScreen = styled((props = {}) => {
           </React.Fragment>
         )}
       </div>
-    </header>
+    </main>
   )
 })`
 display: flex;
@@ -301,13 +301,13 @@ const FavouritesScreen = styled((props = {}) => {
   }, [isFavourited])
 
   return (
-    <header className={`${className} ${loading ? 'loading' : ''}`}>
+    <main className={`${className} ${loading ? 'loading' : ''}`}>
       {loading ? (
         <Loader />
       ) : (
         <ImagesGrid images={images} />
       )}
-    </header>
+    </main>
   )
 })`
 &.loading {
@@ -321,6 +321,10 @@ const App = (props = {}) => {
   return (
     <div className={`App ${className}`}>
       <Router>
+        <header>
+          <NavLink to="/">Search</NavLink>
+          <NavLink to="/favourites">Favourites</NavLink>
+        </header>
         <Switch>
           <Route path="/favourites">
             <FavouritesScreen />
@@ -337,7 +341,7 @@ const App = (props = {}) => {
 export default styled(App)`
 text-align: center;
 
-& > header {
+& > main {
   width: 100%;
   padding: 0 20px;
   box-sizing: border-box;
