@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-do
 import styled from 'styled-components'
 
 import { FavouritesScreen, SearchScreen } from './views'
+import { Footer } from './components'
 
 const App = (props = {}) => {
   const { className } = props
@@ -30,6 +31,7 @@ const App = (props = {}) => {
           </Route>
         </Switch>
       </Router>
+      <Footer />
     </div>
   )
 }
@@ -39,8 +41,14 @@ export default styled(App)`
 
   header {
     display: flex;
+    color: #636e72;
+    padding: 2rem 0;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #636e72;
+    margin-bottom: 1.8rem;
 
     & > * {
+      cursor: default;
       font-size: 1.2rem;
     }
 
@@ -50,24 +58,28 @@ export default styled(App)`
 
     .logo {
       margin: 0;
-      margin-left: 40px;
+      margin-left: 2.5rem;
 
       span:first-child {
         font-weight: normal;
+      }
+      span:last-child {
+        color: #2d2d2d;
       }
     }
 
     .nav-bar {
       a:first-child {
-        width: 80px;
         display: inline-block;
+        margin-right: 1.2rem;
       }
       a {
         text-decoration: none;
-        color: black;
+        color: #636e72;
       }
       a.active {
         font-weight: bold;
+        color: #2d2d2d;
       }
     }
   }

@@ -62,8 +62,9 @@ const SearchScreen = (props = {}) => {
 
   return (
     <main className={className}>
-      <form onSubmit={handleSearch}>
+      <form onSubmit={handleSearch} className="search-form">
         <input
+          className="keyword-input"
           value={keyword}
           onChange={handleKeywordChange}
           disabled={loading}
@@ -72,11 +73,7 @@ const SearchScreen = (props = {}) => {
         />
       </form>
       <div className="images-grid__container">
-        {images.length === 0 ? (
-          <div className="images-not-found">
-            {'There is no image, type on the search box for something...! :")'}
-          </div>
-        ) : (
+        {images.length !== 0 && (
           <React.Fragment>
             <ImagesGrid images={images} />
             <button ref={loadMoreBtn} onClick={handleLoadMore} disabled={loading}>
@@ -94,7 +91,26 @@ display: flex;
 flex-direction: column;
 align-items: center;
 
+.search-form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .keyword-input {
+    width: 80%;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #636e72;
+    font-size: x-large;
+    padding-bottom: 0.4rem;
+  }
+  .keyword-input:hover {
+    border-color: #2d2d2d;
+  }
+}
+
 .images-grid__container {
+  margin-top: 1.6rem;
   width: 100%;
   padding-left: 20px;
   padding-right: 20px;
