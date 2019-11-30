@@ -2,14 +2,14 @@ import React, { useContext, useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 
 import { fetchGifs } from '../apis'
-import { FavouritesContext } from '../contexts/favourites'
+import { useFavourites } from '../contexts/favourites'
 
 import { ImagesGrid, Loader } from '../components'
 
 const FavouritesScreen = (props = {}) => {
   const { className } = props
   const [loading, setLoading] = useState(true)
-  const { favourites } = useContext(FavouritesContext)
+  const { favourites } = useFavourites()
   const [images, setImages] = useState(null)
 
   useEffect(() => {

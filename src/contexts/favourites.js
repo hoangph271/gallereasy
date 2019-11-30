@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect, useCallback } from 'react'
+import React, { useState, createContext, useEffect, useCallback, useContext } from 'react'
 
 const FavouritesContext = createContext()
 const FavouritesConsumer = FavouritesContext.Consumer
@@ -34,10 +34,15 @@ const FavouritesProvider = (props) => {
   )
 }
 
+const useFavourites = () => {
+  return useContext(FavouritesContext)
+}
+
 export default FavouritesContext
 
 export {
   FavouritesContext,
   FavouritesProvider,
   FavouritesConsumer,
+  useFavourites,
 }

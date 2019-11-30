@@ -2,11 +2,14 @@ import React from 'react'
 import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
+import { useFavourites } from './contexts/favourites'
+
 import { FavouritesScreen, SearchScreen } from './views'
 import { Footer } from './components'
 
 const App = (props = {}) => {
   const { className } = props
+  const { favourites } = useFavourites()
 
   return (
     <div className={`App ${className}`}>
@@ -18,8 +21,12 @@ const App = (props = {}) => {
           </h3>
           <div className="divider">{'|'}</div>
           <div className="nav-bar">
-            <NavLink to="/" exact>Search</NavLink>
-            <NavLink to="/favourites">Favourites</NavLink>
+            <NavLink to="/" exact>
+              {'Search'}
+            </NavLink>
+            <NavLink to="/favourites">
+              {`Favourites${favourites.length ? ` (${favourites.length})`: ''}`}
+            </NavLink>
           </div>
         </header>
         <Switch>
