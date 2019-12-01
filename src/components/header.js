@@ -2,6 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
+import { DeviceQueries } from '../constants'
 import { useFavourites } from '../contexts/favourites'
 
 const Header = (props) => {
@@ -34,10 +35,15 @@ export default styled(Header)`
   padding: 0.6rem 0;
   border-bottom: 1px solid #636e72;
   margin-bottom: 1.8rem;
+  justify-content: center;
 
   & > * {
     cursor: default;
     font-size: 1.2rem;
+  }
+
+  .logo, .divider {
+    display: none;
   }
 
   .divider {
@@ -68,6 +74,15 @@ export default styled(Header)`
     a.active {
       font-weight: bold;
       color: #2d2d2d;
+    }
+  }
+
+  @media ${DeviceQueries.mobile} {
+    justify-content: unset;
+
+    & > .logo,
+    & > .divider {
+      display: block;
     }
   }
 `
