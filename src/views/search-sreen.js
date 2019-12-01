@@ -4,6 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 
 import { fetchGifSearch } from '../apis'
 import { useIsMounted } from '../hooks'
+import { useModal } from '../contexts/modal'
 
 import { ImagesGrid, Loader } from '../components'
 
@@ -15,6 +16,7 @@ const SearchScreen = (props = {}) => {
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(false)
   const isMounted = useIsMounted()
+  const { showToast } = useModal()
 
   const { search } = useLocation()
   const queryParamKeyword = new URLSearchParams(search).get('keyword') || ''
@@ -25,23 +27,24 @@ const SearchScreen = (props = {}) => {
 
     setLoading(true)
 
-    // TODO: Handle errors in some better way...! :")
     await fetchGifSearch(keyword, images.length)
       .then((result) => {
         if (isMounted.current) {
           setImages(prevImages => [...prevImages, ...result.images])
         }
       })
-      .catch(() => {})
+      .catch((e) => {
+        console.error(e)
+        showToast('Fetch more GIFs failed')
+      })
     setLoading(false)
-  }, [loading, images, keyword, isMounted])
+  }, [loading, images, keyword, isMounted, showToast])
 
   useEffect(() => {
     if (!Boolean(queryParamKeyword)) return
 
     setLoading(true)
 
-    // TODO: Handle errors in some better way...! :")
     fetchGifSearch(queryParamKeyword)
       .then((result) => {
         const { images, isLastPage } = result
@@ -51,10 +54,13 @@ const SearchScreen = (props = {}) => {
           setIsLastPage(isLastPage)
         }
       })
-      .catch(() => {})
+      .catch((e) => {
+        console.error(e)
+        showToast('Search GIFs failed')
+      })
       .then(() => isMounted && setLoading(false))
 
-  }, [queryParamKeyword, isMounted])
+  }, [queryParamKeyword, isMounted, showToast])
 
   const handleSearch = useCallback(async (e) => {
     e.preventDefault()

@@ -10,8 +10,9 @@ import { ModalProvider } from './contexts/modal'
 const AppWithContexts = () => {
   return (
     <FavouritesProvider>
-      <App />
-      <ModalProvider />
+      <ModalProvider>
+        <App />
+      </ModalProvider>
     </FavouritesProvider>
   )
 }

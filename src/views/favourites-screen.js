@@ -4,14 +4,16 @@ import styled from 'styled-components'
 import { fetchGifs } from '../apis'
 import { useIsMounted } from '../hooks'
 import { useFavourites } from '../contexts/favourites'
+import { useModal } from '../contexts/modal'
 
 import { ImagesGrid, Loader } from '../components'
 
 const FavouritesScreen = (props = {}) => {
   const { className } = props
   const [loading, setLoading] = useState(true)
-  const { favourites } = useFavourites()
   const [images, setImages] = useState(null)
+  const { favourites } = useFavourites()
+  const { showToast } = useModal()
   const isMounted = useIsMounted()
 
   useEffect(() => {
@@ -24,16 +26,19 @@ const FavouritesScreen = (props = {}) => {
 
     setLoading(true)
 
-    // TODO: Handle errors in some better way...! :")
     fetchGifs(favourites)
       .then(result => {
         if (isMounted.current) {
           setImages(result.images)
         }
       })
-      .catch(() => {})
+      .catch((e) => {
+        console.error(e)
+        showToast('Fetch GIFs failed')
+        setImages([])
+      })
       .then(() => isMounted.current && setLoading(false))
-  }, [favourites, images, isMounted])
+  }, [favourites, images, isMounted, showToast])
 
   const isFavourited = useCallback((image) => favourites.includes(image.id), [favourites])
   useEffect(() => {

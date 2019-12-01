@@ -1,44 +1,36 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import styled from 'styled-components'
 
-const ModalContext = createContext({})
+import Toast from './toast'
 
+const ModalContext = createContext({})
 const useModal = () => useContext(ModalContext)
 
+const TOAST_DURATION_MS = 2.75 * 1000
 const ModalProvider = styled((props) => {
-  const { className } = props
-  const [toastContent, setToastContent] = useState('toastContent')
+  const { className, children } = props
+  const [toastContent, setToastContent] = useState(null)
 
-  return createPortal((
-    <ModalContext.Provider value={{ setToastContent }}>
-      <div className={className}>
-        <div className="toast-container">
-          {toastContent && (
-            <div className={`toast ${toastContent ? 'show' : ''}`}>
-              {toastContent}
-            </div>
-          )}
+  useEffect(() => {
+    const timeout = toastContent
+      ? setTimeout(() => setToastContent(null), TOAST_DURATION_MS)
+      : null
+
+    return () => timeout && clearTimeout(timeout)
+  }, [toastContent])
+
+  return (
+    <ModalContext.Provider value={{ showToast: setToastContent }}>
+      {children}
+      {createPortal((
+        <div className={className}>
+          {toastContent && <Toast children={toastContent} />}
         </div>
-      </div>
+      ), document.querySelector('#modal-root'))}
     </ModalContext.Provider>
-  ), document.querySelector('#modal-root'))
+  )
 })`
-  .toast-container {
-    position: fixed;
-    bottom: 2.4rem;
-    left: 0;
-    right: 0;
-    text-align: center;
-
-    .toast {
-      display: inline-block;
-      padding: 0.8rem 2.2rem;
-      background-color: #333;
-      color: #fff;
-      z-index: 1;
-    }
-  }
 `
 
 export {
