@@ -5,7 +5,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { fetchGifSearch } from '../apis'
 import { useIsMounted } from '../hooks'
 
-import { ImagesGrid } from '../components'
+import { ImagesGrid, Loader } from '../components'
 
 const SearchScreen = (props = {}) => {
   const { className } = props
@@ -80,6 +80,7 @@ const SearchScreen = (props = {}) => {
           type="text"
           placeholder="Start searching for images!"
         />
+        <Loader className={`search-loader ${loading ? 'loading' : ''}`} />
       </form>
       <div className="images-grid__container">
         {images.length !== 0 && (
@@ -104,16 +105,20 @@ align-items: center;
 
 .search-form {
   width: 100%;
+  position: relative;
+  padding: 0 10%;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
 
   .keyword-input {
-    width: 80%;
+    width: 100%;
     border: none;
     outline: none;
     border-bottom: 1px solid #636e72;
     font-size: x-large;
     padding-bottom: 0.4rem;
+    height: 1.9rem;
   },
   .keyword-input:hover {
     border-color: #2d2d2d;
@@ -121,6 +126,20 @@ align-items: center;
   .keyword-input[disabled] {
     background: none;
     border-color: #636e72;
+  }
+  & > .search-loader {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 10%;
+      border-width: 5px;
+      height: 1.9rem;
+      width: 1.9rem;
+      box-sizing: border-box;
+      display: none;
+  }
+  & > .search-loader.loading {
+    display: block;
   }
 }
 
