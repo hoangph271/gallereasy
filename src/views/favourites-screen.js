@@ -32,7 +32,7 @@ const FavouritesScreen = (props = {}) => {
         }
       })
       .catch(() => {})
-      .then(() => setLoading(false))
+      .then(() => isMounted.current && setLoading(false))
   }, [favourites, images, isMounted])
 
   const isFavourited = useCallback((image) => favourites.includes(image.id), [favourites])

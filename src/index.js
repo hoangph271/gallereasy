@@ -5,11 +5,13 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 
 import { FavouritesProvider } from './contexts/favourites'
+import { ModalProvider } from './contexts/modal'
 
 const AppWithContexts = () => {
   return (
     <FavouritesProvider>
       <App />
+      <ModalProvider />
     </FavouritesProvider>
   )
 }
