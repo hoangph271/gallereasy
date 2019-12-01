@@ -1,13 +1,23 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import { DeviceQueries } from '../constants'
+
 const Footer = (props = {}) => {
   const { className } = props
 
   return (
     <footer className={className}>
-      <div>{'Gallereasy POC web app'}</div>
-      <div>{'2359 Media'}</div>
+      <div className="footer-left">
+        <span>{'Gallereasy POC'}</span>
+        <span className="spacer">&nbsp;</span>
+        <span>{'web app'}</span>
+      </div>
+      <div className="footer-right">
+        <span>{'2359'}</span>
+        <span className="spacer">&nbsp;</span>
+        <span>{'Media'}</span>
+      </div>
     </footer>
   )
 }
@@ -19,4 +29,21 @@ export default styled(Footer)`
   box-sizing: border-box;
   color: #2d2d2d;
   background-color: #dfe6e9;
+
+  .footer-left, .footer-right {
+    display: flex;
+    flex-direction: column;
+  }
+  .spacer {
+    display: none;
+  }
+
+  @media ${DeviceQueries.mobile} {
+    .footer-left, .footer-right {
+      flex-direction: row;
+    }
+    .spacer {
+      display: block;
+    }
+  }
 `
