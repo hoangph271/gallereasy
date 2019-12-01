@@ -24,7 +24,7 @@ export default styled(Toast)`
   .toast {
     display: inline-block;
     padding: 0.8rem 2.2rem;
-    background-color: rgba(145, 145, 145, 0.2);
+    background-color: rgba(145, 145, 145, 0.4);
     color: #2d2d2d;
     z-index: 1;
   }

@@ -13,7 +13,7 @@ const SearchScreen = (props = {}) => {
 
   const history = useHistory()
   const [isLastPage, setIsLastPage] = useState(true)
-  const [images, setImages] = useState([])
+  const [images, setImages] = useState(null)
   const [loading, setLoading] = useState(false)
   const isMounted = useIsMounted()
   const { showToast } = useModal()
@@ -71,9 +71,7 @@ const SearchScreen = (props = {}) => {
     history.push(`/?keyword=${encodeURIComponent(keyword)}`)
   }, [history, keyword, loading])
 
-  const handleKeywordChange = useCallback((e) => {
-    setKeyword(e.target.value)
-  }, [])
+  const handleKeywordChange = useCallback((e) => setKeyword(e.target.value), [])
 
   return (
     <main className={className}>
@@ -89,11 +87,15 @@ const SearchScreen = (props = {}) => {
         <Loader className={`search-loader ${loading ? 'loading' : ''}`} />
       </form>
       <div className="images-grid__container">
-        {images.length !== 0 && (
+        {images && (
           <React.Fragment>
             <ImagesGrid images={images} />
             {isLastPage || (
-              <button onClick={handleLoadMore} disabled={loading}>
+              <button
+                className="fetch-more-btn"
+                onClick={handleLoadMore}
+                disabled={loading}
+              >
                 {'Fetch more'}
               </button>
             )}
@@ -105,55 +107,72 @@ const SearchScreen = (props = {}) => {
 }
 
 export default styled(SearchScreen)`
-display: flex;
-flex-direction: column;
-align-items: center;
-
-.search-form {
-  width: 100%;
-  position: relative;
-  padding: 0 10%;
-  box-sizing: border-box;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 
-  .keyword-input {
+  .search-form {
     width: 100%;
-    border: none;
-    outline: none;
-    border-bottom: 1px solid #636e72;
-    font-size: x-large;
-    padding-bottom: 0.4rem;
-    height: 1.9rem;
-  },
-  .keyword-input:hover {
-    border-color: #2d2d2d;
-  }
-  .keyword-input[disabled] {
-    background: none;
-    border-color: #636e72;
-  }
-  & > .search-loader {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 10%;
-      border-width: 5px;
-      height: 1.9rem;
-      width: 1.9rem;
-      box-sizing: border-box;
-      display: none;
-  }
-  & > .search-loader.loading {
-    display: block;
-  }
-}
+    position: relative;
+    padding: 0 10%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
 
-.images-grid__container {
-  margin: 1.6rem 0;
-  width: 100%;
-  padding-left: 20px;
-  padding-right: 20px;
-  box-sizing: border-box;
-}
+    .keyword-input {
+      width: 100%;
+      border: none;
+      outline: none;
+      border-bottom: 1px solid #636e72;
+      font-size: x-large;
+      padding-bottom: 0.4rem;
+      height: 1.9rem;
+    },
+    .keyword-input:hover {
+      border-color: #2d2d2d;
+    }
+    .keyword-input[disabled] {
+      background: none;
+      border-color: #636e72;
+    }
+    & > .search-loader {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 10%;
+        border-width: 5px;
+        height: 1.9rem;
+        width: 1.9rem;
+        box-sizing: border-box;
+        display: none;
+    }
+    & > .search-loader.loading {
+      display: block;
+    }
+  }
+
+  .images-grid__container {
+    margin: 1.6rem 0;
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+
+    .fetch-more-btn {
+      background-color: #636e72;
+      border: none;
+      color: white;
+      padding: 0.6rem 1.4rem;
+      text-decoration: none;
+      display: inline-block;
+      text-transform: uppercase;
+      font-size: large;
+      margin-top: 0.8rem;
+    }
+
+    .fetch-more-btn:not([disabled]):hover {
+      background-color: #2d2d2d;
+      cursor: pointer;
+    }
+  }
 `
