@@ -29,7 +29,7 @@ const App = (props = {}) => {
 export default styled(App)`
   text-align: center;
   display: grid;
-  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
   grid-template-rows: auto 1fr auto;
 
   & > main {
