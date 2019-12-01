@@ -1,8 +1,9 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { fetchGifSearch } from '../apis'
+import { useIsMounted } from '../hooks'
 
 import { ImagesGrid } from '../components'
 
@@ -10,13 +11,14 @@ const SearchScreen = (props = {}) => {
   const { className } = props
 
   const history = useHistory()
+  const [isLastPage, setIsLastPage] = useState(true)
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(false)
+  const isMounted = useIsMounted()
 
   const { search } = useLocation()
   const queryParamKeyword = new URLSearchParams(search).get('keyword') || ''
   const [keyword, setKeyword] = useState(queryParamKeyword)
-  const loadMoreBtn = useRef(null)
 
   const handleLoadMore = useCallback(async () => {
     if (loading) return
@@ -25,27 +27,34 @@ const SearchScreen = (props = {}) => {
 
     // TODO: Handle errors in some better way...! :")
     await fetchGifSearch(keyword, images.length)
-      .then((images) => setImages(prevImages => [...prevImages, ...images]))
+      .then((result) => {
+        if (isMounted.current) {
+          setImages(prevImages => [...prevImages, ...result.images])
+        }
+      })
       .catch(() => {})
-
-    loadMoreBtn.current.scrollIntoView({ behavior: 'smooth' })
     setLoading(false)
-  }, [loading, images, keyword])
+  }, [loading, images, keyword, isMounted])
 
   useEffect(() => {
     if (!Boolean(queryParamKeyword)) return
 
-    let isMounted = true
     setLoading(true)
 
     // TODO: Handle errors in some better way...! :")
     fetchGifSearch(queryParamKeyword)
-      .then((images) => isMounted && setImages(images))
+      .then((result) => {
+        const { images, isLastPage } = result
+
+        if (isMounted.current) {
+          setImages(images)
+          setIsLastPage(isLastPage)
+        }
+      })
       .catch(() => {})
       .then(() => isMounted && setLoading(false))
 
-    return () => isMounted = false
-  }, [queryParamKeyword])
+  }, [queryParamKeyword, isMounted])
 
   const handleSearch = useCallback(async (e) => {
     e.preventDefault()
@@ -76,9 +85,11 @@ const SearchScreen = (props = {}) => {
         {images.length !== 0 && (
           <React.Fragment>
             <ImagesGrid images={images} />
-            <button ref={loadMoreBtn} onClick={handleLoadMore} disabled={loading}>
-              {'Load more...!'}
-            </button>
+            {isLastPage || (
+              <button onClick={handleLoadMore} disabled={loading}>
+                {'Fetch more'}
+              </button>
+            )}
           </React.Fragment>
         )}
       </div>
@@ -103,14 +114,18 @@ align-items: center;
     border-bottom: 1px solid #636e72;
     font-size: x-large;
     padding-bottom: 0.4rem;
-  }
+  },
   .keyword-input:hover {
     border-color: #2d2d2d;
+  }
+  .keyword-input[disabled] {
+    background: none;
+    border-color: #636e72;
   }
 }
 
 .images-grid__container {
-  margin-top: 1.6rem;
+  margin: 1.6rem 0;
   width: 100%;
   padding-left: 20px;
   padding-right: 20px;

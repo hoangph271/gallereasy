@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 
 import { fetchGifs } from '../apis'
+import { useIsMounted } from '../hooks'
 import { useFavourites } from '../contexts/favourites'
 
 import { ImagesGrid, Loader } from '../components'
@@ -11,6 +12,7 @@ const FavouritesScreen = (props = {}) => {
   const [loading, setLoading] = useState(true)
   const { favourites } = useFavourites()
   const [images, setImages] = useState(null)
+  const isMounted = useIsMounted()
 
   useEffect(() => {
     if (images !== null) return
@@ -24,10 +26,14 @@ const FavouritesScreen = (props = {}) => {
 
     // TODO: Handle errors in some better way...! :")
     fetchGifs(favourites)
-      .then(setImages)
+      .then(result => {
+        if (isMounted.current) {
+          setImages(result.images)
+        }
+      })
       .catch(() => {})
       .then(() => setLoading(false))
-  }, [favourites, images])
+  }, [favourites, images, isMounted])
 
   const isFavourited = useCallback((image) => favourites.includes(image.id), [favourites])
   useEffect(() => {

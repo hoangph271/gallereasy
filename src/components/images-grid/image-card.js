@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 
 import love from '../../assets/icons/love.png'
+
+import { useIsMounted } from '../../hooks'
 import { FavouritesContext } from '../../contexts/favourites'
 
 import { Loader } from '../index'
@@ -10,16 +12,13 @@ const ImageCard = (props = {}) => {
   const { favourites, addFavourite, removeFavourite } = useContext(FavouritesContext)
   const { className, image } = props
   const [loaded, setLoaded] = useState(false)
+  const isMounted = useIsMounted()
 
   useEffect(() => {
-    let isMounted = true
-
     const img = new Image()
-    img.onload = () => isMounted && setLoaded(true)
+    img.onload = () => isMounted.current && setLoaded(true)
     img.src = image.url
-
-    return () => isMounted = false
-  }, [image.url])
+  }, [image.url, isMounted])
 
   const isFavourited = favourites.some(favourite => favourite === image.id)
   const classNames = `${className}${isFavourited ? ' favorited' : ''}${loaded ? ' loaded' : ''}`
