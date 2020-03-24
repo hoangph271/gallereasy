@@ -1,5 +1,5 @@
 const API_ROOT = 'https://api.giphy.com/v1/gifs'
-const API_KEY = 'ao3o2pNEYof5LZn2xixB7e1pVm7k1Xu4'
+const API_KEY = ''
 
 const Sizes = {
   mobile: '425px',
