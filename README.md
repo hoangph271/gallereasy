@@ -3,6 +3,10 @@ This project is the PoC for Gallereasy web app
 > You must set your own API_KEY at src\constants.js for the app.  
 > If you don't have any, you can obtain one [here](https://developers.giphy.com/docs/sdk)
 
+## Demo
+
+Available [here](https://galler-easy.netlify.app/)
+
 ## Available Scripts
 
 In the project directory, you can run:
