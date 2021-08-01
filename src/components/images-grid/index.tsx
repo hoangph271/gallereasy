@@ -5,7 +5,9 @@ import { DeviceQueries } from '../../constants'
 
 import ImageCard from './image-card'
 
-const ImagesGrid = (props = {}) => {
+const ImagesGrid: StyledFC<{
+  images: GiphyImage[]
+}> = (props) => {
   const { className, images } = props
 
   return images.length === 0 ? (

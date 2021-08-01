@@ -8,7 +8,7 @@ import { useModal } from '../contexts/modal'
 
 import { ImagesGrid, Loader } from '../components'
 
-const SearchScreen = (props = {}) => {
+const SearchScreen: StyledFC = (props) => {
   const { className } = props
 
   const history = useHistory()

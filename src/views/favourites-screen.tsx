@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 
 import { fetchGifs } from '../apis'
@@ -8,10 +8,10 @@ import { useModal } from '../contexts/modal'
 
 import { ImagesGrid, Loader } from '../components'
 
-const FavouritesScreen = (props = {}) => {
+const FavouritesScreen: StyledFC = (props) => {
   const { className } = props
   const [loading, setLoading] = useState(true)
-  const [images, setImages] = useState(null)
+  const [images, setImages] = useState<GiphyImage[] | null>(null)
   const { favourites } = useFavourites()
   const { showToast } = useModal()
   const isMounted = useIsMounted()
@@ -42,7 +42,9 @@ const FavouritesScreen = (props = {}) => {
 
   const isFavourited = useCallback((image) => favourites.includes(image.id), [favourites])
   useEffect(() => {
-    setImages(prevImages => prevImages && prevImages.filter(isFavourited))
+    setImages((prevImages) => {
+      return prevImages?.filter(isFavourited) ?? null
+    })
   }, [isFavourited])
 
   return (
@@ -50,7 +52,7 @@ const FavouritesScreen = (props = {}) => {
       {loading ? (
         <Loader />
       ) : (
-        <ImagesGrid images={images} />
+        <ImagesGrid images={images as GiphyImage[]} />
       )}
     </main>
   )

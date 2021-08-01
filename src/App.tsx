@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { FavouritesScreen, SearchScreen } from './views'
 import { Header, Footer } from './components'
 
-const App: StyledFC<{}> = (props) => {
+const App: StyledFC = (props) => {
   const { className } = props
 
   return (

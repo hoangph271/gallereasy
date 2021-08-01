@@ -1,16 +1,21 @@
-import React, { useState, createContext, useEffect, useCallback, useContext } from 'react'
+import { useState, createContext, useEffect, useCallback, useContext } from 'react'
 
-const FavouritesContext = createContext()
+const FavouritesContext = createContext(null as unknown as {
+  favourites: string[],
+  addFavourite(id: string): void,
+  removeFavourite(id: string): void
+})
 const FavouritesConsumer = FavouritesContext.Consumer
-const storedFavourites = []
+const storedFavourites: string[] = []
 
 try {
-  storedFavourites.push(...JSON.parse(localStorage.getItem('favourites')))
+  storedFavourites.push(...JSON.parse(localStorage.getItem('favourites') ?? '[]'))
 } catch (error) {
+  console.error(error)
   localStorage.setItem('favourites', '[]')
 }
 
-const FavouritesProvider = (props) => {
+const FavouritesProvider: StyledFC = (props) => {
   const [favourites, setFavourites] = useState(storedFavourites)
   useEffect(() => {
   }, [])

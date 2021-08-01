@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 
 import love from '../../assets/icons/love.png'
@@ -8,7 +8,9 @@ import { FavouritesContext } from '../../contexts/favourites'
 
 import { Loader } from '../index'
 
-const ImageCard = (props = {}) => {
+const ImageCard: StyledFC<{
+  image: GiphyImage
+}> = (props) => {
   const { favourites, addFavourite, removeFavourite } = useContext(FavouritesContext)
   const { className, image } = props
   const [loaded, setLoaded] = useState(false)
@@ -20,7 +22,7 @@ const ImageCard = (props = {}) => {
     img.src = image.url
   }, [image.url, isMounted])
 
-  const isFavourited = favourites.some(favourite => favourite === image.id)
+  const isFavourited = favourites.some((favourite: string) => favourite === image.id)
   const classNames = `${className}${isFavourited ? ' favorited' : ''}${loaded ? ' loaded' : ''}`
 
   return loaded ? (

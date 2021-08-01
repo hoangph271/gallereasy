@@ -4,14 +4,6 @@ const appendApiKey = (url: string) => `${url}&api_key=${API_KEY}`
 const createSearchUrl = (keyword: string, offset: number) => appendApiKey(`${API_ROOT}/search?q=${encodeURIComponent(keyword)}&limit=${SEARCH_LIMIT}&offset=${offset}`)
 const createGetGifsUrl = (ids: string[]) => appendApiKey(`${API_ROOT}?ids=${ids.join(',')}`)
 
-type GiphyImage = {
-  id: string,
-  images: {
-    original: {
-      url: string
-    }
-  }
-}
 const extractAPIResponse = async (response: Response) => {
   const { data, pagination } = await response.json()
 
