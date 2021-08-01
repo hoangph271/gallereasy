@@ -1,11 +1,10 @@
-import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { FavouritesScreen, SearchScreen } from './views'
 import { Header, Footer } from './components'
 
-const App = (props = {}) => {
+const App: StyledFC<{}> = (props) => {
   const { className } = props
 
   return (
