@@ -1,13 +1,11 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import styled from 'styled-components'
 
 import Toast from './toast'
 
 const ModalContext = createContext({})
-const useModal = () => useContext<{
-  showToast: (children: React.ReactNode) => {}
-}>(ModalContext as any)
+const useModal = () => useContext<{ showToast(children: ReactNode): void }>(ModalContext as any)
 
 const TOAST_DURATION_MS = 2.75 * 1000
 const ModalProvider = styled((props) => {
@@ -29,7 +27,11 @@ const ModalProvider = styled((props) => {
       {children}
       {createPortal((
         <div className={className}>
-          {toastContent && <Toast children={toastContent} />}
+          {toastContent && (
+            <Toast>
+              {toastContent}
+            </Toast>
+          )}
         </div>
       ), document.querySelector('#modal-root') as Element)}
     </ModalContext.Provider>
@@ -40,5 +42,5 @@ const ModalProvider = styled((props) => {
 export {
   ModalContext,
   ModalProvider,
-  useModal,
+  useModal
 }

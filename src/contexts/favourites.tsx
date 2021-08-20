@@ -1,4 +1,5 @@
 import { useState, createContext, useEffect, useCallback, useContext } from 'react'
+import { StyledFC } from '../types'
 
 const FavouritesContext = createContext(null as unknown as {
   favourites: string[],
@@ -49,5 +50,5 @@ export {
   FavouritesContext,
   FavouritesProvider,
   FavouritesConsumer,
-  useFavourites,
+  useFavourites
 }

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { StyledFC } from '../../types'
 
 const Toast: StyledFC = (props) => {
   const { className, children } = props
