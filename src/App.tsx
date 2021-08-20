@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import { FavouritesScreen, SearchScreen } from './views'
 import { Header, Footer } from './components'
+import { StyledFC } from './types'
 
 const App: StyledFC = (props) => {
   const { className } = props

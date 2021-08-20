@@ -1,4 +1,5 @@
 import { API_ROOT, API_KEY, SEARCH_LIMIT } from './constants'
+import type { GiphyImage } from './types'
 
 const appendApiKey = (url: string) => `${url}&api_key=${API_KEY}`
 const createSearchUrl = (keyword: string, offset: number) => appendApiKey(`${API_ROOT}/search?q=${encodeURIComponent(keyword)}&limit=${SEARCH_LIMIT}&offset=${offset}`)
@@ -7,13 +8,13 @@ const createGetGifsUrl = (ids: string[]) => appendApiKey(`${API_ROOT}?ids=${ids.
 const extractAPIResponse = async (response: Response) => {
   const { data, pagination } = await response.json()
 
-  const images = data.map((image: GiphyImage)  => ({
+  const images = data.map((image: GiphyImage) => ({
     id: image.id,
     url: image.images.original.url
   }))
 
-  const { count, offset, total_count } = pagination
-  const isLastPage = total_count === offset + count
+  const { count, offset, total_count: totalCount } = pagination
+  const isLastPage = totalCount === offset + count
 
   return { images, isLastPage }
 }
@@ -41,5 +42,5 @@ const fetchGifSearch = async (keyword: string, offset = 0) => {
 
 export {
   fetchGifs,
-  fetchGifSearch,
+  fetchGifSearch
 }

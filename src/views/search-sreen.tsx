@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import { Fragment, useState, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 import { useHistory, useLocation } from 'react-router-dom'
 
@@ -7,6 +7,7 @@ import { useIsMounted } from '../hooks'
 import { useModal } from '../contexts/modal'
 
 import { ImagesGrid, Loader } from '../components'
+import { GiphyImage, StyledFC } from '../types'
 
 const SearchScreen: StyledFC = (props) => {
   const { className } = props
@@ -41,7 +42,7 @@ const SearchScreen: StyledFC = (props) => {
   }, [loading, images, keyword, isMounted, showToast])
 
   useEffect(() => {
-    if (!Boolean(queryParamKeyword)) return
+    if (!queryParamKeyword) return
 
     setLoading(true)
 
@@ -59,14 +60,13 @@ const SearchScreen: StyledFC = (props) => {
         showToast('Search GIFs failed')
       })
       .then(() => isMounted && setLoading(false))
-
   }, [queryParamKeyword, isMounted, showToast])
 
   const handleSearch = useCallback(async (e) => {
     e.preventDefault()
 
     if (loading) return
-    if (!Boolean(keyword)) return
+    if (!keyword) return
 
     history.push(`/?keyword=${encodeURIComponent(keyword)}`)
   }, [history, keyword, loading])
@@ -88,7 +88,7 @@ const SearchScreen: StyledFC = (props) => {
       </form>
       <div className="images-grid__container">
         {images && (
-          <React.Fragment>
+          <Fragment>
             <ImagesGrid images={images} />
             {isLastPage || (
               <button
@@ -99,7 +99,7 @@ const SearchScreen: StyledFC = (props) => {
                 {'Fetch more'}
               </button>
             )}
-          </React.Fragment>
+          </Fragment>
         )}
       </div>
     </main>

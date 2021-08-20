@@ -1,7 +1,7 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import { DeviceQueries } from '../../constants'
+import { GiphyImage, StyledFC } from '../../types'
 
 import ImageCard from './image-card'
 

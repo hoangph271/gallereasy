@@ -5,10 +5,10 @@ export const SEARCH_LIMIT = 8
 const Sizes = {
   mobile: '425px',
   tablet: '768px',
-  desktop: '1024px',
+  desktop: '1024px'
 }
 export const DeviceQueries = {
   mobile: `(min-width: ${Sizes.mobile})`,
   tablet: `(min-width: ${Sizes.tablet})`,
-  desktop: `(min-width: ${Sizes.desktop})`,
+  desktop: `(min-width: ${Sizes.desktop})`
 }

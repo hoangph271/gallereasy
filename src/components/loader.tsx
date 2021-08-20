@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { StyledFC } from '../types'
 
 const Loader: StyledFC = (props) => {
   const { className } = props

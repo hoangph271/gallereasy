@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 import { DeviceQueries } from '../constants'
+import { StyledFC } from '../types'
 
 const Footer: StyledFC = (props) => {
   const { className } = props

@@ -7,6 +7,7 @@ import { useFavourites } from '../contexts/favourites'
 import { useModal } from '../contexts/modal'
 
 import { ImagesGrid, Loader } from '../components'
+import { GiphyImage, StyledFC } from '../types'
 
 const FavouritesScreen: StyledFC = (props) => {
   const { className } = props

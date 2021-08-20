@@ -7,6 +7,7 @@ import { useIsMounted } from '../../hooks'
 import { FavouritesContext } from '../../contexts/favourites'
 
 import { Loader } from '../index'
+import { GiphyImage, StyledFC } from '../../types'
 
 const ImageCard: StyledFC<{
   image: GiphyImage

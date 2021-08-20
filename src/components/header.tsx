@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import { DeviceQueries } from '../constants'
 import { useFavourites } from '../contexts/favourites'
+import { StyledFC } from '../types'
 
 const Header: StyledFC = (props) => {
   const { className } = props
@@ -20,7 +21,7 @@ const Header: StyledFC = (props) => {
           {'Search'}
         </NavLink>
         <NavLink to="/favourites">
-          {`Favourites${favourites.length ? ` (${favourites.length})`: ''}`}
+          {`Favourites${favourites.length ? ` (${favourites.length})` : ''}`}
         </NavLink>
       </div>
     </header>
