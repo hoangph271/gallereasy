@@ -1,11 +1,10 @@
-import React from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { DeviceQueries } from '../constants'
 import { useFavourites } from '../contexts/favourites'
 
-const Header = (props) => {
+const Header: StyledFC = (props) => {
   const { className } = props
   const { favourites } = useFavourites()
 

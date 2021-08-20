@@ -1,7 +1,6 @@
-import React from 'react'
 import styled from 'styled-components'
 
-const Toast = (props) => {
+const Toast: StyledFC = (props) => {
   const { className, children } = props
 
   return (

@@ -1,9 +1,8 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import { DeviceQueries } from '../constants'
 
-const Footer = (props = {}) => {
+const Footer: StyledFC = (props) => {
   const { className } = props
 
   return (
