@@ -13,7 +13,7 @@ const SearchScreen: StyledFC = (props) => {
 
   const history = useHistory()
   const [isLastPage, setIsLastPage] = useState(true)
-  const [images, setImages] = useState(null)
+  const [images, setImages] = useState<GiphyImage[] | null>(null)
   const [loading, setLoading] = useState(false)
   const isMounted = useIsMounted()
   const { showToast } = useModal()
@@ -27,10 +27,10 @@ const SearchScreen: StyledFC = (props) => {
 
     setLoading(true)
 
-    await fetchGifSearch(keyword, images.length)
+    await fetchGifSearch(keyword, images?.length ?? 0)
       .then((result) => {
         if (isMounted.current) {
-          setImages(prevImages => [...prevImages, ...result.images])
+          setImages(prevImages => [...prevImages ?? [], ...result.images])
         }
       })
       .catch((e) => {
@@ -127,7 +127,7 @@ export default styled(SearchScreen)`
       font-size: x-large;
       padding-bottom: 0.4rem;
       height: 1.9rem;
-    },
+    }
     .keyword-input:hover {
       border-color: #2d2d2d;
     }

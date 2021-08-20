@@ -1,7 +1,6 @@
-import React from 'react'
 import styled from 'styled-components'
 
-const Loader = (props = {}) => {
+const Loader: StyledFC = (props) => {
   const { className } = props
 
   return (
