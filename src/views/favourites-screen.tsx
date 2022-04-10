@@ -1,56 +1,66 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import { fetchGifs } from '../apis'
-import { useIsMounted } from '../hooks'
 import { useFavourites } from '../contexts/favourites'
 import { useModal } from '../contexts/modal'
 
 import { ImagesGrid, Loader } from '../components'
 import { GiphyImage, StyledFC } from '../types'
 
-const FavouritesScreen: StyledFC = (props) => {
-  const { className } = props
-  const [loading, setLoading] = useState(true)
-  const [images, setImages] = useState<GiphyImage[] | null>(null)
+const useFavoriteImages = () => {
   const { favourites } = useFavourites()
+  const [isLoading, setIsLoading] = useState(true)
+  const [images, setImages] = useState<GiphyImage[] | null>(null)
+
   const { showToast } = useModal()
-  const isMounted = useIsMounted()
+
+  useEffect(() => {
+    const isFavourited = (image: GiphyImage) => {
+      return favourites.includes(image.id)
+    }
+
+    setImages((prevImages) => {
+      return prevImages?.filter(isFavourited) ?? null
+    })
+  }, [favourites])
 
   useEffect(() => {
     if (images !== null) return
     if (favourites.length === 0) {
-      setLoading(false)
+      setIsLoading(false)
       setImages([])
       return
     }
 
-    setLoading(true)
+    setIsLoading(true)
 
     fetchGifs(favourites)
       .then(result => {
-        if (isMounted.current) {
-          setImages(result.images)
-        }
+        setImages(result.images)
       })
       .catch((e) => {
         console.error(e)
         showToast('Fetch GIFs failed')
         setImages([])
       })
-      .then(() => isMounted.current && setLoading(false))
-  }, [favourites, images, isMounted, showToast])
+      .finally(() => setIsLoading(false))
+  }, [favourites, images, showToast])
 
-  const isFavourited = useCallback((image: GiphyImage) => favourites.includes(image.id), [favourites])
-  useEffect(() => {
-    setImages((prevImages) => {
-      return prevImages?.filter(isFavourited) ?? null
-    })
-  }, [isFavourited])
+  return {
+    images,
+    isLoading,
+    favourites
+  }
+}
+
+const FavouritesScreen: StyledFC = (props) => {
+  const { className } = props
+  const { images, isLoading } = useFavoriteImages()
 
   return (
-    <main className={`${className} ${loading ? 'loading' : ''}`}>
-      {loading ? (
+    <main className={`${className} ${isLoading ? 'loading' : ''}`}>
+      {isLoading ? (
         <Loader />
       ) : (
         <ImagesGrid images={images as GiphyImage[]} />
@@ -60,7 +70,7 @@ const FavouritesScreen: StyledFC = (props) => {
 }
 
 export default styled(FavouritesScreen)`
-&.loading {
-  justify-content: center;
-}
+  &.loading {
+    justify-content: center;
+  }
 `

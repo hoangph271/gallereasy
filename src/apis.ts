@@ -19,8 +19,12 @@ const extractAPIResponse = async (response: Response) => {
   return { images, isLastPage }
 }
 
-const fetchGifs = async (ids: string[]) => {
-  const res = await fetch(createGetGifsUrl(ids))
+type FetchOptions = {
+  signal?: AbortSignal
+}
+
+const fetchGifs = async (ids: string[], { signal }: FetchOptions = {}) => {
+  const res = await fetch(createGetGifsUrl(ids), { signal })
 
   if (res.status === 200) {
     return extractAPIResponse(res)
