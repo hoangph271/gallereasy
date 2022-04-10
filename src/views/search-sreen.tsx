@@ -1,6 +1,6 @@
-import { Fragment, useState, useCallback, useEffect } from 'react'
+import { Fragment, useState, useCallback, useEffect, ChangeEventHandler, FormEventHandler } from 'react'
 import styled from 'styled-components'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 import { fetchGifSearch } from '../apis'
 import { useIsMounted } from '../hooks'
@@ -12,7 +12,7 @@ import { GiphyImage, StyledFC } from '../types'
 const SearchScreen: StyledFC = (props) => {
   const { className } = props
 
-  const history = useHistory()
+  const navigate = useNavigate()
   const [isLastPage, setIsLastPage] = useState(true)
   const [images, setImages] = useState<GiphyImage[] | null>(null)
   const [loading, setLoading] = useState(false)
@@ -62,16 +62,18 @@ const SearchScreen: StyledFC = (props) => {
       .then(() => isMounted && setLoading(false))
   }, [queryParamKeyword, isMounted, showToast])
 
-  const handleSearch = useCallback(async (e) => {
+  const handleSearch = useCallback<FormEventHandler<HTMLFormElement>>(async (e) => {
     e.preventDefault()
 
     if (loading) return
     if (!keyword) return
 
-    history.push(`/?keyword=${encodeURIComponent(keyword)}`)
+    navigate(`/?keyword=${encodeURIComponent(keyword)}`)
   }, [history, keyword, loading])
 
-  const handleKeywordChange = useCallback((e) => setKeyword(e.target.value), [])
+  const handleKeywordChange = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
+    setKeyword(e.target.value)
+  }, [])
 
   return (
     <main className={className}>

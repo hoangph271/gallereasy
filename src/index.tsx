@@ -1,25 +1,16 @@
-import ReactDOM from 'react-dom'
-import './index.css'
-import App from './App'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { AppWithContexts } from './App'
 import * as serviceWorker from './serviceWorker'
 
-import { FavouritesProvider } from './contexts/favourites'
-import { ModalProvider } from './contexts/modal'
+import './index.css'
 
-const AppWithContexts = () => {
-  return (
-    <FavouritesProvider>
-      <ModalProvider>
-        <App />
-      </ModalProvider>
-    </FavouritesProvider>
+createRoot(document.getElementById('root')!)
+  .render(
+    <StrictMode>
+      <AppWithContexts />
+    </StrictMode>
   )
-}
-
-ReactDOM.render(
-  <AppWithContexts />,
-  document.getElementById('root')
-)
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

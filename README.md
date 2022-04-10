@@ -26,3 +26,9 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
+
+## Useful tools:
+
+- [React 18 quick guide (core concepts)](https://dev.to/shrutikapoor08/react-18-quick-guide-core-concepts-explained-519p)
+- [React 18 upgrade guide](https://reactjs.org/blog/2022/03/08/react-18-upgrade-guide.html)
+- [React v18.0](https://reactjs.org/blog/2022/03/29/react-v18.html)

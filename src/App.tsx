@@ -1,9 +1,11 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { FavouritesScreen, SearchScreen } from './views'
 import { Header, Footer } from './components'
 import { StyledFC } from './types'
+import { FavouritesProvider } from './contexts/favourites'
+import { ModalProvider } from './contexts/modal'
 
 const App: StyledFC = (props) => {
   const { className } = props
@@ -12,21 +14,17 @@ const App: StyledFC = (props) => {
     <div className={`App ${className}`}>
       <Router>
         <Header />
-        <Switch>
-          <Route path="/favourites">
-            <FavouritesScreen />
-          </Route>
-          <Route path="/">
-            <SearchScreen />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/favourites" element={<FavouritesScreen />} />
+          <Route path="/" element={<SearchScreen />} />
+        </Routes>
         <Footer />
       </Router>
     </div>
   )
 }
 
-export default styled(App)`
+const StyledApp = styled(App)`
   text-align: center;
   display: grid;
   min-height: calc(var(--vh, 1vh) * 100);
@@ -42,3 +40,13 @@ export default styled(App)`
     font-size: calc(10px + 2vmin);
   }
 `
+
+export const AppWithContexts = () => {
+  return (
+    <FavouritesProvider>
+      <ModalProvider>
+        <StyledApp />
+      </ModalProvider>
+    </FavouritesProvider>
+  )
+}

@@ -41,7 +41,7 @@ const FavouritesScreen: StyledFC = (props) => {
       .then(() => isMounted.current && setLoading(false))
   }, [favourites, images, isMounted, showToast])
 
-  const isFavourited = useCallback((image) => favourites.includes(image.id), [favourites])
+  const isFavourited = useCallback((image: GiphyImage) => favourites.includes(image.id), [favourites])
   useEffect(() => {
     setImages((prevImages) => {
       return prevImages?.filter(isFavourited) ?? null
