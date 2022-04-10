@@ -1,9 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 
-import love from '../../assets/icons/love.png'
-
-import { useIsMounted } from '../../hooks'
 import { FavouritesContext } from '../../contexts/favourites'
 
 import { Loader } from '../index'
@@ -15,13 +12,12 @@ const ImageCard: StyledFC<{
   const { favourites, addFavourite, removeFavourite } = useContext(FavouritesContext)
   const { className, image } = props
   const [loaded, setLoaded] = useState(false)
-  const isMounted = useIsMounted()
 
   useEffect(() => {
     const img = new Image()
-    img.onload = () => isMounted.current && setLoaded(true)
+    img.onload = () => setLoaded(true)
     img.src = image.url
-  }, [image.url, isMounted])
+  }, [image.url])
 
   const isFavourited = favourites.some((favourite: string) => favourite === image.id)
   const classNames = `${className}${isFavourited ? ' favorited' : ''}${loaded ? ' loaded' : ''}`
@@ -37,7 +33,7 @@ const ImageCard: StyledFC<{
           onLoad={() => setLoaded(true)}
           alt={isFavourited ? 'Remove from favourites' : 'Add to favourites'}
           className="favorite-sticker"
-          src={love}
+          src="/icons/love.png"
         />
       )}
     </div>

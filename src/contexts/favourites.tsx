@@ -20,13 +20,13 @@ const FavouritesProvider: StyledFC = (props) => {
   const [favourites, setFavourites] = useState(storedFavourites)
   useEffect(() => {
   }, [])
-  const addFavourite = useCallback((imageId) => {
+  const addFavourite = useCallback((imageId: string) => {
     const nextFavourites = [...new Set([...favourites, imageId])]
 
     setFavourites(nextFavourites)
     localStorage.setItem('favourites', JSON.stringify(nextFavourites))
   }, [favourites])
-  const removeFavourite = useCallback((imageId) => {
+  const removeFavourite = useCallback((imageId: string) => {
     const nextFavourites = favourites.filter(favourite => favourite !== imageId)
 
     setFavourites(nextFavourites)

@@ -17,7 +17,7 @@ const Header: StyledFC = (props) => {
       </h3>
       <div className="divider">{'|'}</div>
       <div className="nav-bar">
-        <NavLink to="/" exact>
+        <NavLink to="/" end>
           {'Search'}
         </NavLink>
         <NavLink to="/favourites">

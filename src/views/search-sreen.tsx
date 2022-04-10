@@ -1,9 +1,8 @@
-import { Fragment, useState, useCallback, useEffect } from 'react'
+import { Fragment, useState, useCallback, useEffect, ChangeEventHandler, FormEventHandler } from 'react'
 import styled from 'styled-components'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 import { fetchGifSearch } from '../apis'
-import { useIsMounted } from '../hooks'
 import { useModal } from '../contexts/modal'
 
 import { ImagesGrid, Loader } from '../components'
@@ -12,11 +11,10 @@ import { GiphyImage, StyledFC } from '../types'
 const SearchScreen: StyledFC = (props) => {
   const { className } = props
 
-  const history = useHistory()
+  const navigate = useNavigate()
   const [isLastPage, setIsLastPage] = useState(true)
   const [images, setImages] = useState<GiphyImage[] | null>(null)
   const [loading, setLoading] = useState(false)
-  const isMounted = useIsMounted()
   const { showToast } = useModal()
 
   const { search } = useLocation()
@@ -30,16 +28,14 @@ const SearchScreen: StyledFC = (props) => {
 
     await fetchGifSearch(keyword, images?.length ?? 0)
       .then((result) => {
-        if (isMounted.current) {
-          setImages(prevImages => [...prevImages ?? [], ...result.images])
-        }
+        setImages(prevImages => [...prevImages ?? [], ...result.images])
       })
       .catch((e) => {
         console.error(e)
         showToast('Fetch more GIFs failed')
       })
     setLoading(false)
-  }, [loading, images, keyword, isMounted, showToast])
+  }, [loading, images, keyword, showToast])
 
   useEffect(() => {
     if (!queryParamKeyword) return
@@ -50,28 +46,28 @@ const SearchScreen: StyledFC = (props) => {
       .then((result) => {
         const { images, isLastPage } = result
 
-        if (isMounted.current) {
-          setImages(images)
-          setIsLastPage(isLastPage)
-        }
+        setImages(images)
+        setIsLastPage(isLastPage)
       })
       .catch((e) => {
         console.error(e)
         showToast('Search GIFs failed')
       })
-      .then(() => isMounted && setLoading(false))
-  }, [queryParamKeyword, isMounted, showToast])
+      .then(() => setLoading(false))
+  }, [queryParamKeyword, showToast])
 
-  const handleSearch = useCallback(async (e) => {
+  const handleSearch = useCallback<FormEventHandler<HTMLFormElement>>(async (e) => {
     e.preventDefault()
 
     if (loading) return
     if (!keyword) return
 
-    history.push(`/?keyword=${encodeURIComponent(keyword)}`)
+    navigate(`/?keyword=${encodeURIComponent(keyword)}`)
   }, [history, keyword, loading])
 
-  const handleKeywordChange = useCallback((e) => setKeyword(e.target.value), [])
+  const handleKeywordChange = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
+    setKeyword(e.target.value)
+  }, [])
 
   return (
     <main className={className}>

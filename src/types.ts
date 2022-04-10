@@ -1,6 +1,9 @@
-import type { FC } from 'react'
+import type { FC, ReactNode } from 'react'
 
-export type StyledFC<T = {}> = FC<{ className?: string } & T>
+export type StyledFC<T = {}> = FC<{
+  className?: string
+  children?: ReactNode
+} & T>
 
 export type GiphyImage = {
   id: string,
