@@ -1,8 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 
-import love from '../../assets/icons/love.png'
-
 import { useIsMounted } from '../../hooks'
 import { FavouritesContext } from '../../contexts/favourites'
 
@@ -37,7 +35,7 @@ const ImageCard: StyledFC<{
           onLoad={() => setLoaded(true)}
           alt={isFavourited ? 'Remove from favourites' : 'Add to favourites'}
           className="favorite-sticker"
-          src={love}
+          src="/icons/love.png"
         />
       )}
     </div>
