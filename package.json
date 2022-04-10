@@ -2,6 +2,9 @@
   "name": "gallereasy",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "> 16.0.0"
+  },
   "dependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
