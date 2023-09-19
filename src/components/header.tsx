@@ -31,10 +31,8 @@ const Header: StyledFC = (props) => {
 export default styled(Header)`
   display: flex;
   color: #636e72;
-  padding: 2rem 0;
   padding: 0.6rem 0;
   border-bottom: 1px solid #636e72;
-  margin-bottom: 1.8rem;
   justify-content: center;
 
   & > * {
